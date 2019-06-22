@@ -12,11 +12,11 @@ There is very little preventing users from using this to mirror pirated content.
 
 ## Bot commands
 
-* `/mirror <url>`: Download from the given URL and upload it to Google Drive. <url> can be HTTP(S), a BitTorrent magnet, or a HTTP(S) url to a BitTorrent .torrent file. A status message will be shown and updated while downloading.
-* `/mirrorTar <url>`: Same as `/mirror`, but archive multiple files into a tar before uploading it.
-* `/mirrorStatus`: Send a status message about all active and queued downloads.
-* `/cancelMirror`: Cancel a particular mirroring task. To use this, send it as a reply to the message that started the download that you want to cancel. Only the person who started the task, SUDO_USERS, and chat admins can use this command.
-* `/cancelAll`: Cancel all mirroring tasks in all chats if a [SUDO_USERS](#Constants-description) member uses it, or cancel all mirroring tasks for a particular chat if one of that chat's admins use it. No one else can use this command.
+* `/upload <url>`: Download from the given URL and upload it to Google Drive. <url> can be HTTP(S), a BitTorrent magnet, or a HTTP(S) url to a BitTorrent .torrent file. A status message will be shown and updated while downloading.
+* `/uploadtar <url>`: Same as `/mirror`, but archive multiple files into a tar before uploading it.
+* `/uploadstatus`: Send a status message about all active and queued downloads.
+* `/stopupload`: Cancel a particular mirroring task. To use this, send it as a reply to the message that started the download that you want to cancel. Only the person who started the task, SUDO_USERS, and chat admins can use this command.
+* `/stopall`: Cancel all mirroring tasks in all chats if a [SUDO_USERS](#Constants-description) member uses it, or cancel all mirroring tasks for a particular chat if one of that chat's admins use it. No one else can use this command.
 * `/list <filename>` : Send links to downloads with the `filename` substring in the name. In case of too many downloads, only show the most recent few. 
 * `/getfolder` : Send link of drive mirror folder.
 
@@ -54,8 +54,8 @@ Aria-telegram-mirror-bot is now written in TypeScript. If you are migrating from
 2. Clone the repo:
 
    ```bash
-   git clone https://github.com/out386/aria-telegram-mirror-bot
-   cd aria-telegram-mirror-bot
+   git clone https://github.com/gotenksIN/tgmirrorbot
+   cd tgmirrorbot
    ```
 
 3. Run `npm install`
@@ -99,7 +99,7 @@ Aria-telegram-mirror-bot is now written in TypeScript. If you are migrating from
 
 11. Start the bot with `npm start`
 
-12. Open Telegram, and send `/mirror https://raw.githubusercontent.com/out386/aria-telegram-mirror-bot/master/README.md` to the bot.
+12. Open Telegram, and send `/upload https://raw.githubusercontent.com/songotenks69/gotenksIN/master/README.md` to the bot.
 
 11. In the terminal, it'll ask you to visit an authentication URL. Visit it, grant access, copy the code on that page, and paste it in the terminal.
 
