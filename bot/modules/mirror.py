@@ -22,10 +22,10 @@ import os
 
 
 class MirrorListener(listeners.MirrorListeners):
-
-    def __init__(self, bot, update, isTar=False, tag=None):
+    def __init__(self, bot, update, isTar=False, extract=False, tag=None):
         super().__init__(bot, update)
         self.isTar = isTar
+        self.extract = extract
         self.tag = tag
 
     def onDownloadStarted(self):
@@ -60,6 +60,14 @@ class MirrorListener(listeners.MirrorListeners):
                 LOGGER.info('File to archive not found!')
                 self.onUploadError('Internal error occurred!!')
                 return
+        elif self.extract:
+            LOGGER.info(
+                f"Extracting : {download_dict[self.uid].name()} "
+            )
+            path = fs_utils.unzip(m_path)
+            LOGGER.info(
+                f'got path : {path}'
+            )
         else:
             path = f'{DOWNLOAD_DIR}{self.uid}/{download_dict[self.uid].name()}'
         up_name = pathlib.PurePath(path).name
@@ -144,8 +152,7 @@ class MirrorListener(listeners.MirrorListeners):
         else:
             update_all_messages()
 
-
-def _mirror(bot, update, isTar=False):
+def _mirror(bot, update, isTar=False, extract=False):
     message_args = update.message.text.split(' ')
     try:
         link = message_args[1]
@@ -185,7 +192,7 @@ def _mirror(bot, update, isTar=False):
         link = direct_link_generator(link)
     except DirectDownloadLinkException as e:
         LOGGER.info(f'{link}: {e}')
-    listener = MirrorListener(bot, update, isTar, tag)
+    listener = MirrorListener(bot, update, isTar, extract, tag)
     aria = aria2_download.AriaDownloadHelper(listener)
     aria.add_download(link, f'{DOWNLOAD_DIR}/{listener.uid}/')
     sendStatusMessage(update, bot)
@@ -203,9 +210,17 @@ def tar_mirror(update, context):
     _mirror(context.bot, update, True)
 
 
+@run_async
+def unzip_mirror(update, bot):
+    _mirror(update, bot, extract=True)
+
+
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
 tar_mirror_handler = CommandHandler(BotCommands.TarMirrorCommand, tar_mirror,
                                     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
+unzip_mirror_handler = CommandHandler(BotCommands.UnzipMirrorCommand, unzip_mirror,
+                                      filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
 dispatcher.add_handler(mirror_handler)
 dispatcher.add_handler(tar_mirror_handler)
+dispatcher.add_handler(unzip_mirror_handler)
