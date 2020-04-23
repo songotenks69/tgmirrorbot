@@ -173,7 +173,7 @@ def _mirror(bot, update, isTar=False, extract=False):
         if len(link) == 0:
             if file is not None:
                 if file.mime_type != "application/x-bittorrent":
-                    listener = MirrorListener(bot, update, isTar, tag)
+                    listener = MirrorListener(bot, update, isTar, extract, tag)
                     tg_downloader = TelegramDownloadHelper(listener)
                     tg_downloader.add_download(reply_to, f'{DOWNLOAD_DIR}{listener.uid}/')
                     sendStatusMessage(update, bot)
@@ -207,12 +207,12 @@ def mirror(update, context):
 
 @run_async
 def tar_mirror(update, context):
-    _mirror(context.bot, update, True)
+    _mirror(context.bot, update, isTar=True)
 
 
 @run_async
-def unzip_mirror(update, bot):
-    _mirror(update, bot, extract=True)
+def unzip_mirror(update, context):
+    _mirror(context.bot, update, extract=True)
 
 
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
