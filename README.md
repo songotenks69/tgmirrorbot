@@ -41,7 +41,7 @@ sudo pacman -S docker python
 
 ## Setting up config file
 ```
-cp config_sample.env config.env
+cp sample_config.env config.env
 ```
 - Remove the first line saying:
 ```
